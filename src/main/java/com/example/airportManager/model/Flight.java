@@ -18,10 +18,6 @@ public class Flight {
 
     private String code;
 
-    private Long route_id;
-
-//    private Long aircraft_id;
-
     private String departureScheduled;
 
     private String arrivalScheduled;
@@ -32,14 +28,10 @@ public class Flight {
     private FlightStatus status;
 
     @ManyToOne
-    @JoinColumn(
-            name = "aircraft_id"
-    )
+    @JoinColumn(name = "aircraft_id")
     private Aircraft aircraft;
 
     @ManyToOne
-    @JoinColumn(
-            name = "route_id"
-    )
+    @JoinColumn(name = "route_id")
     private Route route;
 }
