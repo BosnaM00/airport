@@ -1,38 +1,38 @@
 package com.example.airportManager.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Set;
 
 @Entity
+@Table(name = "route")
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
-//Route(id, origin_airport_id, dest_airport_id, distanceNm, stdDurationMin)
+@Getter
+@Setter
+@ToString(exclude = {"flights"})
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Route {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long ID;
+    @EqualsAndHashCode.Include
+    private Long id;
 
+    @Column(nullable = false)
     private int distanceNm;
 
+    @Column(nullable = false)
     private int stdDurationMin;
 
-    @ManyToOne
-    @JoinColumn(
-            name = "origin_airport_id"
-    )
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "origin_airport_id", nullable = false)
     private Airport originAirport;
 
-    @ManyToOne
-    @JoinColumn(
-            name = "dest_airport_id"
-    )
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "dest_airport_id", nullable = false)
     private Airport destAirport;
 
-    @OneToMany(mappedBy = "route")
+    @OneToMany(mappedBy = "route", fetch = FetchType.LAZY)
     private Set<Flight> flights;
 }

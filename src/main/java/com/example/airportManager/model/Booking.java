@@ -1,27 +1,36 @@
 package com.example.airportManager.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
+@Table(name = "booking", indexes = {
+    @Index(name = "idx_booking_pnr", columnList = "pnr")
+})
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
-//Booking(id, user_id, flight_id, pnr, bookingStatus: CONFIRMED|CANCELLED|CHECKED_IN)
+@Getter
+@Setter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Booking {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Include
     private Long id;
 
-    private Long user_id;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private Passenger passenger;
 
-    private Long flight_id;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "flight_id", nullable = false)
+    private Flight flight;
 
+    @Column(unique = true, nullable = false)
     private String pnr;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private BookingStatus status;
 }
