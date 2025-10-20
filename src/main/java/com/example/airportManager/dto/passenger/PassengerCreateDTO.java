@@ -7,5 +7,7 @@ public record PassengerCreateDTO(
         @NotBlank String firstName,
         @NotBlank String lastName,
         @NotBlank @Email String email,
-        String nationality
+        @NotBlank String docType,
+        @NotBlank String docNumber,
+        @NotBlank String nationality
 ) {}

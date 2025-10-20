@@ -9,8 +9,6 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface PassengerMapper {
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "docType", ignore = true)
-    @Mapping(target = "docNumber", ignore = true)
     @Mapping(target = "loyaltyTier", ignore = true)
     @Mapping(target = "emergencyContact", ignore = true)
     @Mapping(target = "bookings", ignore = true)
