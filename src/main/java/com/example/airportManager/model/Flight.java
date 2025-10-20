@@ -38,7 +38,7 @@ public class Flight {
     private FlightStatus status;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "aircraft_id", nullable = false)
+    @JoinColumn(name = "aircraft_id")
     private Aircraft aircraft;
 
     @ManyToOne(fetch = FetchType.LAZY)
