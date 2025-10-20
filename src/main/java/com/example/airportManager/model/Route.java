@@ -6,7 +6,9 @@ import lombok.*;
 import java.util.Set;
 
 @Entity
-@Table(name = "route")
+@Table(name = "route", uniqueConstraints = {
+    @UniqueConstraint(name = "uk_route_airports", columnNames = {"origin_airport_id", "dest_airport_id"})
+})
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
