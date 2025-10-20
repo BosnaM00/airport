@@ -1,37 +1,50 @@
 package com.example.airportManager.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
+import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
+@Table(name = "flight", indexes = {
+    @Index(name = "idx_flight_code", columnList = "code")
+})
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
-//Flight(id, code, route_id, aircraft_id, departureScheduled,
-// arrivalScheduled, gate, status: SCHEDULED|BOARDING|DELAYED|CANCELLED|IN_AIR|LANDED)
+@Getter
+@Setter
+@ToString(exclude = {"bookings"})
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Flight {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long ID;
+    @EqualsAndHashCode.Include
+    private Long id;
 
+    @Column(nullable = false)
     private String code;
 
-    private String departureScheduled;
+    @Column(nullable = false)
+    private LocalDateTime departureScheduled;
 
-    private String arrivalScheduled;
+    @Column(nullable = false)
+    private LocalDateTime arrivalScheduled;
 
     private String gate;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private FlightStatus status;
 
-    @ManyToOne
-    @JoinColumn(name = "aircraft_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "aircraft_id", nullable = false)
     private Aircraft aircraft;
 
-    @ManyToOne
-    @JoinColumn(name = "route_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "route_id", nullable = false)
     private Route route;
+
+    @OneToMany(mappedBy = "flight", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private Set<Booking> bookings;
 }
